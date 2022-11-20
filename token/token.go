@@ -11,11 +11,11 @@ const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
 
-	// identifier , literal
+	// Identifier , Literal
 	IDENT = "IDENT"
 	INT   = "INT"
 
-	// operator
+	// Operator
 	ASSIGN = "="
 	PLUS   = "+"
 
@@ -27,4 +27,8 @@ const (
 	RPAREN = ")"
 	LBRACE = "{"
 	RBRACE = "}"
+
+	// Keywords
+	FUNCTION = "FUNCTION"
+	LET      = "LET"
 )
