@@ -10,7 +10,7 @@ const (
 
 	// Operators
 	ASSIGN = "="
-	PLUG   = "+"
+	PLUS   = "+"
 
 	// Delimeters
 	COMMA     = ","
