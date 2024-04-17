@@ -1,7 +1,5 @@
 package token
 
-import "log"
-
 const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
@@ -11,8 +9,14 @@ const (
 	INT   = "INT"
 
 	// Operators
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	ASTERISK = "*"
+	SLASH    = "/"
+	LT       = "<"
+	GT       = ">"
 
 	// Delimeters
 	COMMA     = ","
@@ -42,7 +46,6 @@ var keywords = map[string]TokenType{
 
 func LookupIdent(ident string) TokenType {
 	if tok, ok := keywords[ident]; ok {
-		log.Println(keywords[ident])
 		return tok
 	}
 	return IDENT
