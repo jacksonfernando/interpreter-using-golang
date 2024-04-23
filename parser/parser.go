@@ -37,3 +37,29 @@ func (p *Parser) ParseProgram() *ast.Program {
 	}
 	return program
 }
+
+func (p *Parser) parseStatement() ast.Statement {
+	switch p.currToken.Type {
+	case token.LET:
+		return p.parseLetStatement()
+	default:
+		return nil
+	}
+}
+
+func (p *Parser) parseLetStatement() *ast.LetStatement {
+	stmt := &ast.LetStatement{Token: p.currToken}
+
+	if !p.expecPeek(token.IDENT) {
+		return nil
+	}
+	return nil
+}
+
+func (p *Parser) curTokenIs(t token.TokenType) bool {
+	return p.currToken.Type == t
+}
+
+func (p *Parser) peekTokenIs(t token.TokenType) bool {
+	return p.peekToken.Type == t
+}
