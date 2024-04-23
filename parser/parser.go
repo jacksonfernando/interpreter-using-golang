@@ -59,6 +59,7 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 		return nil
 	}
 
+	// TODO: We're skipping the expression until we encounter semicolon
 	for !p.curTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
