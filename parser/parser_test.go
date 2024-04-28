@@ -7,6 +7,10 @@ import (
 	"github.com/v2/golang-intrepeter/lexer"
 )
 
+func TestReturnStatements(t *testing.T) {
+
+}
+
 func TestLetStatements(t *testing.T) {
 	input := `
 		let x = 5;
