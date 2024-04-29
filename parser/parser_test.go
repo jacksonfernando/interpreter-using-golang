@@ -14,7 +14,7 @@ func TestReturnStatements(t *testing.T) {
 		return 99322;
 	`
 	l := lexer.New(input)
-	p := New()
+	p := New(l)
 
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
