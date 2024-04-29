@@ -40,7 +40,7 @@ func TestLetStatements(t *testing.T) {
 	input := `
 		let x = 5;
 		let y = 10;
-		let 838383;
+		let b = 298129312;
 	`
 
 	l := lexer.New(input)
