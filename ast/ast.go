@@ -121,3 +121,5 @@ func (p *Program) TokenLiteral() string {
 	}
 	return ""
 }
+
+func (i *Identifier) String() string { return i.Value }
