@@ -40,6 +40,8 @@ type LetStatement struct {
 	Value Expression
 }
 
+func (ls *LetStatement) statementNode() {}
+
 func (ls *LetStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
@@ -58,8 +60,6 @@ func (ls *LetStatement) String() string {
 	return out.String()
 }
 
-func (ls *LetStatement) statementNode() {}
-
 // Return Statement
 type ReturnStatement struct {
 	Token       token.Token
@@ -69,6 +69,20 @@ type ReturnStatement struct {
 func (rs *ReturnStatement) statementNode() {}
 
 func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }
+
+func (rs *ReturnStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(rs.TokenLiteral() + " ")
+
+	if rs.ReturnValue != nil {
+		out.WriteString(rs.ReturnValue.String())
+	}
+
+	out.WriteString(";")
+
+	return out.String()
+}
 
 // Expression Statement
 type ExpressionStatement struct {
