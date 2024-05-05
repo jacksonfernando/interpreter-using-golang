@@ -7,6 +7,33 @@ import (
 	"github.com/v2/golang-intrepeter/lexer"
 )
 
+func TestIntegerLiteralExpression(t *testing.T) {
+	input := "5;"
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("progam has not enough statement. got=%d", len(program.Statements))
+	}
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T", program.Statements[0])
+	}
+	literal, ok := stmt.Expression.(*ast.IntegralLiteral)
+	if !ok {
+		t.Fatalf("exp not *ast.IntegralLiteral. got=%T", stmt.Expression)
+	}
+	if literal.Value != 5 {
+		t.Errorf("LIteral.Value not %d. got=%d", 5, literal.Value)
+	}
+	if literal.TokenLiteral() != '5' {
+		t.Error("literal.TokenLiteral not %s. got=%s", "5", literal.TokenLiteral())
+	}
+}
+
 func TestIdentifierExpression(t *testing.T) {
 	input := "footbar;"
 
