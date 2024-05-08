@@ -22,15 +22,15 @@ func TestIntegerLiteralExpression(t *testing.T) {
 	if !ok {
 		t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T", program.Statements[0])
 	}
-	literal, ok := stmt.Expression.(*ast.IntegralLiteral)
+	literal, ok := stmt.Expression.(*ast.IntegerLiteral)
 	if !ok {
 		t.Fatalf("exp not *ast.IntegralLiteral. got=%T", stmt.Expression)
 	}
 	if literal.Value != 5 {
 		t.Errorf("LIteral.Value not %d. got=%d", 5, literal.Value)
 	}
-	if literal.TokenLiteral() != '5' {
-		t.Error("literal.TokenLiteral not %s. got=%s", "5", literal.TokenLiteral())
+	if literal.TokenLiteral() != "5" {
+		t.Errorf("literal.TokenLiteral not %s. got=%s", "5", literal.TokenLiteral())
 	}
 }
 
