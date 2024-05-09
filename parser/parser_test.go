@@ -27,10 +27,21 @@ func TestIntegerLiteralExpression(t *testing.T) {
 		t.Fatalf("exp not *ast.IntegralLiteral. got=%T", stmt.Expression)
 	}
 	if literal.Value != 5 {
-		t.Errorf("LIteral.Value not %d. got=%d", 5, literal.Value)
+		t.Errorf("literal.Value not %d. got=%d", 5, literal.Value)
 	}
 	if literal.TokenLiteral() != "5" {
 		t.Errorf("literal.TokenLiteral not %s. got=%s", "5", literal.TokenLiteral())
+	}
+}
+
+func TestParsingPrefixExpressions(t *testing.T) {
+	prefixTests := []struct {
+		input        string
+		operator     string
+		integerValue int64
+	}{
+		{"!5", "!", 5},
+		{"-15;", "-", 15},
 	}
 }
 
