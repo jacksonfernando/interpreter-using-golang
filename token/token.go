@@ -4,9 +4,11 @@ const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
 
-	// Identifiers + literals
+	// Identifiers
 	IDENT = "IDENT"
-	INT   = "INT"
+
+	// Literal
+	INT = "INT"
 
 	// Operators
 	ASSIGN   = "="
