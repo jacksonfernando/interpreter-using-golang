@@ -33,6 +33,13 @@ func (p *Program) String() string {
 	return out.String()
 }
 
+func (p *Program) TokenLiteral() string {
+	if len(p.Statements) > 0 {
+		return p.Statements[0].TokenLiteral()
+	}
+	return ""
+}
+
 // Let Statement
 type LetStatement struct {
 	Token token.Token
@@ -171,11 +178,16 @@ func (i *Identifier) TokenLiteral() string {
 
 func (i *Identifier) expressionNode() {}
 
-func (p *Program) TokenLiteral() string {
-	if len(p.Statements) > 0 {
-		return p.Statements[0].TokenLiteral()
-	}
-	return ""
+func (i *Identifier) String() string { return i.Value }
+
+// Boolean
+type Boolean struct {
+	Token token.Token
+	Value bool
 }
 
-func (i *Identifier) String() string { return i.Value }
+func (b *Boolean) expressionNode() {}
+
+func (b *Boolean) TokenLiteral() string { return b.Token.Literal }
+
+func (b *Boolean) String() string { return b.Token.Literal }
