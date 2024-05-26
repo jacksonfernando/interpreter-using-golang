@@ -59,6 +59,8 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.TRUE, p.parseBoolean)
 	p.registerPrefix(token.FALSE, p.parseBoolean)
 	p.registerPrefix(token.LPAREN, p.parseGroupedExpression)
+	p.registerPrefix(token.IF, p.parseIfExpression)
+
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
 	p.registerInfix(token.PLUS, p.parseInfixExpression)
 	p.registerInfix(token.MINUS, p.parseInfixExpression)
@@ -68,8 +70,10 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.NOT_EQ, p.parseInfixExpression)
 	p.registerInfix(token.LT, p.parseInfixExpression)
 	p.registerInfix(token.GT, p.parseInfixExpression)
+
 	p.nextToken()
 	p.nextToken()
+
 	return p
 }
 
@@ -83,6 +87,27 @@ func (p *Parser) parseGroupedExpression() ast.Expression {
 	}
 
 	return exp
+}
+
+func (p *Parser) parseIfExpression() ast.Expression {
+	expression := &ast.IfExpression{Token: p.currToken}
+
+	if !p.expectPeek(token.LPAREN) {
+		return nil
+	}
+	p.nextToken()
+	expression.Condition = p.parseExpression(LOWEST)
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+
+	if !p.expectPeek(token.LBRACE) {
+		return nil
+	}
+
+	expression.Consequence = p.parseBlockStatement()
+	return expression
 }
 
 func (p *Parser) peekPrecedence() int {
@@ -207,7 +232,6 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 		return nil
 	}
 
-	// TODO: We're skipping the expression until we encounter semicolon
 	for !p.curTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
