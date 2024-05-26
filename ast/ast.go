@@ -220,7 +220,7 @@ type FunctionLiteral struct {
 	Body       *BlockStatement
 }
 
-func (fl *FunctionLiteral) expressionnode() {}
+func (fl *FunctionLiteral) expressionNode() {}
 
 func (fl *FunctionLiteral) TokenLiteral() string { return fl.Token.Literal }
 
