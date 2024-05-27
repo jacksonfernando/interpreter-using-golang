@@ -14,7 +14,7 @@ func TestLetStatements(t *testing.T) {
 		expectedIdentifier string
 		expectedValue      interface{}
 	}{
-		//{"let x = 5;", "x", 5},
+		{"let x = 5;", "x", 5},
 		{"let y = true;", "y", true},
 		{"let foobar = y;", "foobar", "y"},
 	}
@@ -47,8 +47,8 @@ func TestReturnStatements(t *testing.T) {
 		input         string
 		expectedValue interface{}
 	}{
-		//{"return 5;", 5},
-		//{"return true;", true},
+		{"return 5;", 5},
+		{"return true;", true},
 		{"return foobar;", "foobar"},
 	}
 
@@ -301,6 +301,18 @@ func TestOperatorPrecedenceParsing(t *testing.T) {
 		{
 			"3 > 5 == false",
 			"((3 > 5) == false)",
+		},
+		{
+			"a + add(b * c) + d",
+			"((a + add(b * c)) + d)",
+		},
+		{
+			"add(a, b, 1, 2 * 3, 4 + 5, add(6, 7 * 8))",
+			"add(a, b, 1, (2 * 3), (4 + 5), add(6, (7 * 8))",
+		},
+		{
+			"add(a + b + c * d / f + g)",
+			"add((((a + b) + ((c * d) / f)) + g))",
 		},
 	}
 
