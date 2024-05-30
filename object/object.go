@@ -12,7 +12,7 @@ type ObjectType string
 
 type Object interface {
 	Type() ObjectType
-	Insepct() string
+	Inspect() string
 }
 
 // Integer
