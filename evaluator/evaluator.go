@@ -49,6 +49,11 @@ func Eval(node ast.Node) object.Object {
 		return evalIfExpression(node)
 	case *ast.IntegerLiteral:
 		return &object.Integer{Value: node.Value}
+	case *ast.LetStatement:
+		val := Eval(node.Value)
+		if isError(val) {
+			return val
+		}
 	}
 	return nil
 }
