@@ -4,6 +4,9 @@ const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
 
+	//STRING
+	STRING = "STRING"
+
 	// Identifiers
 	IDENT = "IDENT"
 

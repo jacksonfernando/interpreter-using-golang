@@ -1,6 +1,9 @@
 package lexer
 
-import "github.com/v2/golang-intrepeter/token"
+import (
+	"github.com/bufbuild/buf/private/buf/cmd/buf/command/alpha/registry/token/tokenlist"
+	"github.com/v2/golang-intrepeter/token"
+)
 
 type Lexer struct {
 	input        string
@@ -31,6 +34,9 @@ func (l *Lexer) NextToken() token.Token {
 		} else {
 			tok = newToken(token.ASSIGN, l.ch)
 		}
+	case '"':
+		tok.Type = token.STRING
+		tok.Literal = l.readString()
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
 	case '-':
@@ -81,6 +87,18 @@ func (l *Lexer) NextToken() token.Token {
 	}
 	l.readChar()
 	return tok
+}
+
+func (l *Lexer) readString() string {
+	position := l.position + 1
+	for {
+		l.readChar()
+
+		if l.ch == '"' || l.ch == 0 {
+			break
+		}
+	}
+	return l.input[position:l.position]
 }
 
 func (l *Lexer) readIdentifier() string {
