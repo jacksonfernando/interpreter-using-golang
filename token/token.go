@@ -1,7 +1,5 @@
 package token
 
-import "fmt"
-
 const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
@@ -9,8 +7,12 @@ const (
 	IDENT = "IDENT"
 	INT   = "INT"
 
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	SLASH    = "/"
+	ASTERISK = "*"
 
 	COMMA     = ","
 	SEMICOLON = ";"
@@ -22,6 +24,9 @@ const (
 
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
+
+	LT = "<"
+	GT = ">"
 )
 
 type TokenType string
@@ -37,7 +42,6 @@ var keyword = map[string]TokenType{
 }
 
 func LookUpIdent(tokenLiteral string) TokenType {
-	fmt.Println("IDENT", tokenLiteral)
 	if tok, ok := keyword[tokenLiteral]; ok {
 		return tok
 	}
