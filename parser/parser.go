@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"fmt"
+
 	"github.com/v2/golang-intrepeter/ast"
 	"github.com/v2/golang-intrepeter/lexer"
 	"github.com/v2/golang-intrepeter/token"
@@ -10,6 +12,7 @@ type Parser struct {
 	l         *lexer.Lexer
 	currToken token.Token
 	peekToken token.Token
+	errors    []string
 }
 
 func (p *Parser) nextToken() {
@@ -18,10 +21,22 @@ func (p *Parser) nextToken() {
 }
 
 func New(l *lexer.Lexer) *Parser {
-	parser := &Parser{l: l}
+	parser := &Parser{
+		l:      l,
+		errors: []string{},
+	}
 	parser.nextToken()
 	parser.nextToken()
 	return parser
+}
+
+func (p *Parser) Errors() []string {
+	return p.errors
+}
+
+func (p *Parser) peekError(t token.TokenType) {
+	msg := fmt.Sprintf("expected next token to be %s, got %s instead", t, p.peekToken.Type)
+	p.errors = append(p.errors, msg)
 }
 
 func (p *Parser) ParseProgram() *ast.Program {
@@ -76,5 +91,6 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.nextToken()
 		return true
 	}
+	p.peekError(t)
 	return false
 }
