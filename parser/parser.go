@@ -8,25 +8,27 @@ import (
 
 type Parser struct {
 	l         *lexer.Lexer
-	curToken  token.Token
+	currToken token.Token
 	peekToken token.Token
 }
 
-func New(l *lexer.Lexer) *Parser {
-	newParser := &Parser{l: l}
-	return newParser
+func (p *Parser) nextToken() {
+	p.currToken = p.peekToken
+	p.peekToken = p.l.NextToken()
 }
 
-func (p *Parser) nextToken() {
-	p.curToken = p.peekToken
-	p.peekToken = p.l.NextToken()
+func New(l *lexer.Lexer) *Parser {
+	parser := &Parser{l: l}
+	parser.nextToken()
+	parser.nextToken()
+	return parser
 }
 
 func (p *Parser) ParseProgram() *ast.Program {
 	program := &ast.Program{}
 	program.Statements = []ast.Statement{}
 
-	for p.curToken.Type != token.EOF {
+	for p.currToken.Type != token.EOF {
 		stmt := p.parseStatement()
 		if stmt != nil {
 			program.Statements = append(program.Statements, stmt)
@@ -37,7 +39,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 }
 
 func (p *Parser) parseStatement() ast.Statement {
-	switch p.curToken.Type {
+	switch p.currToken.Type {
 	case token.LET:
 		return p.parseLetStatement()
 	default:
@@ -46,35 +48,31 @@ func (p *Parser) parseStatement() ast.Statement {
 }
 
 func (p *Parser) parseLetStatement() *ast.LetStatement {
-	stmt := &ast.LetStatement{Token: p.curToken}
+	stmt := &ast.LetStatement{Token: p.currToken}
 
 	if !p.expectPeek(token.IDENT) {
 		return nil
 	}
 
-	stmt.Name = &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
+	stmt.Name = &ast.Identifier{Token: p.currToken, Value: p.currToken.Literal}
 
 	if !p.expectPeek(token.ASSIGN) {
 		return nil
 	}
 
-	for !p.currTokenIs(token.SEMICOLON) {
-		p.nextToken()
-	}
-
 	return stmt
 }
 
-func (p *Parser) peekTokenIs(tok token.TokenType) bool {
-	return tok == p.peekToken.Type
+func (p *Parser) peekTokenIs(t token.TokenType) bool {
+	return p.peekToken.Type == t
 }
 
-func (p *Parser) currTokenIs(tok token.TokenType) bool {
-	return tok == p.curToken.Type
+func (p *Parser) currTokenIs(t token.TokenType) bool {
+	return p.currToken.Type == t
 }
 
-func (p *Parser) expectPeek(tok token.TokenType) bool {
-	if p.peekTokenIs(tok) {
+func (p *Parser) expectPeek(t token.TokenType) bool {
+	if p.peekTokenIs(t) {
 		p.nextToken()
 		return true
 	}
