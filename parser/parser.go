@@ -112,9 +112,11 @@ func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 
 func (p *Parser) parseExpression(precedence int) ast.Expression {
 	prefix := p.prefixParseFuncs[p.currToken.Type]
-	if prefix != nil {
+
+	if prefix == nil {
 		return nil
 	}
+
 	leftExp := prefix()
 
 	return leftExp
