@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/v2/golang-intrepeter/ast"
 	"github.com/v2/golang-intrepeter/lexer"
@@ -33,6 +34,19 @@ type Parser struct {
 	infixParseFuncs  map[token.TokenType]infixParseFunc
 }
 
+func (p *Parser) parseIntegerLiteral() ast.Expression {
+	lit := &ast.IntegerLiteral{Token: p.currToken}
+
+	value, err := strconv.ParseInt(p.currToken.Literal, 0, 64)
+	if err != nil {
+		msg := fmt.Sprintf("could not parse %q as integer", p.currToken.Literal)
+		p.errors = append(p.errors, msg)
+		return nil
+	}
+	lit.Value = value
+	return lit
+}
+
 func (p *Parser) nextToken() {
 	p.currToken = p.peekToken
 	p.peekToken = p.l.NextToken()
@@ -54,6 +68,7 @@ func New(l *lexer.Lexer) *Parser {
 
 	parser.prefixParseFuncs = make(map[token.TokenType]prefixParseFunc)
 	parser.registerPrefix(token.IDENT, parser.parseIdentifier)
+	parser.registerPrefix(token.INT, parser.parseIntegerLiteral)
 
 	parser.nextToken()
 	parser.nextToken()
