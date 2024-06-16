@@ -46,6 +46,7 @@ type Parser struct {
 }
 
 func (p *Parser) parseIntegerLiteral() ast.Expression {
+
 	lit := &ast.IntegerLiteral{Token: p.currToken}
 
 	value, err := strconv.ParseInt(p.currToken.Literal, 0, 64)
@@ -240,6 +241,11 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 		return nil
 	}
 
+	if !p.currTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+	p.nextToken()
+
 	return stmt
 }
 
@@ -248,7 +254,6 @@ func (p *Parser) peekTokenIs(t token.TokenType) bool {
 }
 
 func (p *Parser) currTokenIs(t token.TokenType) bool {
-
 	return p.currToken.Type == t
 }
 
