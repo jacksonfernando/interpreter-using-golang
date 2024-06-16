@@ -54,6 +54,7 @@ func (p *Parser) parseIntegerLiteral() ast.Expression {
 		p.errors = append(p.errors, msg)
 		return nil
 	}
+
 	lit.Value = value
 	return lit
 }
@@ -111,8 +112,8 @@ func New(l *lexer.Lexer) *Parser {
 	parser.nextToken()
 
 	return parser
-}
 
+}
 func (p *Parser) parsePrefixExpression() ast.Expression {
 	expression := &ast.PrefixExpression{
 		Token:    p.currToken,

@@ -64,13 +64,11 @@ type Identifier struct {
 	Value string
 }
 
+func (i *Identifier) expressionNode() {}
+func (i *Identifier) String() string  { return i.Value }
 func (i *Identifier) TokenLiteral() string {
 	return i.Token.Literal
 }
-
-func (i *Identifier) expressionNode() {}
-
-func (i *Identifier) String() string { return i.Value }
 
 type ReturnStatement struct {
 	Token       token.Token
@@ -161,6 +159,7 @@ func (oe *InfixExpression) String() string {
 	out.WriteString(oe.Left.String())
 	out.WriteString(" " + oe.Operator + " ")
 	out.WriteString(oe.Right.String())
+	out.WriteString(")")
 
 	return out.String()
 }
