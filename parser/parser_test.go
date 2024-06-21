@@ -39,8 +39,8 @@ func TestCallExpressionParsing(t *testing.T) {
 		t.Fatalf("wrong length of arguments. got=%d", len(exp.Arguments))
 	}
 
-	testLiteralExpression(t, exp.Arguments[0], 1)
 	testInfixExpression(t, exp.Arguments[1], 2, "*", 3)
+	testLiteralExpression(t, exp.Arguments[0], 1)
 	testInfixExpression(t, exp.Arguments[2], 4, "+", 5)
 }
 
@@ -73,7 +73,7 @@ func TestFunctionParameterParsing(t *testing.T) {
 	}
 }
 
-func TestFunctionLIteralParsing(t *testing.T) {
+func TestFunctionLiteralParsing(t *testing.T) {
 	input := `fn(x, y){ x + y; }`
 
 	l := lexer.New(input)
@@ -95,8 +95,8 @@ func TestFunctionLIteralParsing(t *testing.T) {
 		t.Fatalf("stmt.Expression is not ast.FunctionLiteral. got=%T", stmt.Expression)
 	}
 
-	testLiteralExpression(t, function.Parameters[0], "y")
-	testLiteralExpression(t, function.Parameters[1], "x")
+	testLiteralExpression(t, function.Parameters[0], "x")
+	testLiteralExpression(t, function.Parameters[1], "y")
 
 	if len(function.Body.Statements) != 1 {
 		t.Fatalf("function.Body.Statements has not 1 statemetns. got=%d\n", len(function.Body.Statements))
